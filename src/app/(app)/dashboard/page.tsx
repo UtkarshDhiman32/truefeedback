@@ -448,14 +448,15 @@ function UserDashboard() {
     });
 
     const { register, watch, setValue } = form;
-    const acceptMessages = watch('acceptMessages');
+    const acceptMessage = watch('acceptMessage');
 
     const fetchAcceptMessages = useCallback(async () => {
         setIsSwitchLoading(true);
         try {
             const response = await axios.get<ApiResponse>('/api/accept-messages');
             // Aapke backend standard ke mutabik parameter value mapped ki
-            setValue('acceptMessages', response.data.isAcceptingMessages ?? response.data.isAcceptingMessage);
+            const status = response.data.isAcceptingMessage ?? response.data.isAcceptingMessage;
+            setValue('acceptMessage', status || false);
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
             toast({
@@ -511,9 +512,9 @@ function UserDashboard() {
     const handleSwitchChange = async () => {
         try {
             const response = await axios.post<ApiResponse>('/api/accept-messages', {
-                acceptMessages: !acceptMessages,
+                acceptMessages: !acceptMessage,
             });
-            setValue('acceptMessages', !acceptMessages);
+            setValue('acceptMessage', !acceptMessage);
             toast({
                 title: response.data.message,
                 variant: 'default',
@@ -568,13 +569,13 @@ function UserDashboard() {
 
             <div className="mb-4 flex items-center">
                 <Switch
-                    {...register('acceptMessages')}
-                    checked={acceptMessages}
+                    {...register('acceptMessage')}
+                    checked={acceptMessage}
                     onCheckedChange={handleSwitchChange}
                     disabled={isSwitchLoading}
                 />
                 <span className="ml-2">
-                    Accept Messages: {acceptMessages ? 'On' : 'Off'}
+                    Accept Messages: {acceptMessage ? 'On' : 'Off'}
                 </span>
             </div>
             <Separator />
