@@ -82,7 +82,11 @@ export async function POST(req: Request) {
     } catch (error: any) {
         console.error('Fatal Integration Error:', error);
         return NextResponse.json(
-            { success: false, message: error.message || 'Failed to connect to AI engine' },
+            // { success: false, message: error.message || 'Failed to connect to AI engine' },
+            {
+                success: false,
+                message: "AI Server is busy. Please try again after some time or type your own message!"
+            },
             { status: 500 }
         );
     }
