@@ -80,7 +80,7 @@ export async function sendVerificationEmail(
         // Email design aur content setup (HTML template)
         const mailOptions = {
             // from: `"Mystery Message" <${process.env.SMTP_USER}>`,
-            form: "onboarding@resend.dev",
+            from: `"True Feedback" <${process.env.SMTP_USER}>`,
             to: email,
             subject: "Mystery message | Verification code",
             html: `
